@@ -1,11 +1,11 @@
 import speech_recognition as sr
-import pyttsx3 as pt
 import time
 import random
+from gtts import gTTS
+import os
 
 readyToGo = ['Oui ?', 'Qu\'y a-t\'il ?', 'Quoi encore ?']
 language = 'fr-FR'
-engine = pt.init()
 
 def transcribe_to_text(filename):
     recognizer = sr.Recognizer()
@@ -21,8 +21,12 @@ def getMacMicro():
     return liste.index('MacBook Pro Microphone')
 
 def speak_text(text):
-    engine.say(text)
-    engine.runAndWait()
+    myobj = gTTS(text=text, lang='fr', slow=False)
+    myobj.save('current.mp3')
+    os.system("afplay current.mp3")
+    
+# class Fonction:
+    
 
 def main():
     while True :
@@ -36,7 +40,7 @@ def main():
 
             if transcription.lower() == 'jarvis':
                 filename = 'listen.wav'
-                print(random.choice(readyToGo))
+                speak_text(random.choice(readyToGo))
                 
                 with sr.Microphone(device_index=getMacMicro()) as source:
                     reconizer = sr.Recognizer()
@@ -49,7 +53,10 @@ def main():
                 text = transcribe_to_text(filename)
                 if text:
                     print(f'You said : {text}')
+                    speak_text('Oui et vous ?')
 
+            if transcription.lower() == 'exit':
+                exit()
 
         except Exception as e:
             print(e)

@@ -1,8 +1,7 @@
-import pyttsx3
-engine = pyttsx3.init()
-voices = engine.getProperty("voices")
-for voice in voices:
-    print(voice.name)
-    engine.setProperty('voice', voice.id)
-    engine.say("Bonjour, comment allez-vous ?")
-    engine.runAndWait()
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/test")
+async def get_data():
+    return {'data': 'ok'}
